@@ -47,7 +47,7 @@ const __dirname = path.resolve();
 
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 app.get('*', (req, res) =>
-    res.sendFile(path.join(__dirname, '../frontend/public/index.html'))
+    res.sendFile(path.join(__dirname, '../lala-frontend/public/index.html'))
 );
 
 // app.get('/', (req, res) => {
