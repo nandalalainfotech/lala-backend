@@ -14,10 +14,12 @@ app.get('/', (req, res) => {
 })
 
 app.listen(80,() =>{
+    console.log(port,"port");
     console.log("Server running on port 80.")
 })
 
-connect(connection_string, {
+connect("mongodb+srv://nandalala:Spartans!23@cluster0.ujwabrm.mongodb.net/laladb?retryWrites=true&w=majority", {
+    
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true

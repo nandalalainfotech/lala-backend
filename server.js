@@ -5,6 +5,9 @@ import mongoose from 'mongoose';
 import userRouter from './routers/useRouter.js';
 import productRouter from './routers/productRouter.js';
 import sareeRouter from './routers/sareeRouter.js';
+import womenRouter from './routers/womenRouter.js';
+import kidRouter from './routers/kidRouter.js';
+import tshirtRouter from './routers/TshirtRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import path from 'path';
 import uploadRouter from './routers/uploadRouter.js';
@@ -12,17 +15,15 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 
-
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-
 app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb+srv://nandalala:Spartans!23@cluster0.ujwabrm.mongodb.net/laladb?retryWrites=true&w=majority', {
-    useNewUrlParser:true,
+    useNewUrlParser: true,
 
 });
 
@@ -32,6 +33,9 @@ app.use(cors());
 app.use('/api/uploads', uploadRouter);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/womens', womenRouter);
+app.use('/api/kids', kidRouter)
+app.use('/api/tshirts', tshirtRouter);
 app.use('/api/sarees', sareeRouter);
 app.use('/api/orders', orderRouter);
 app.get('/api/config/paypal', (req, res) => {
@@ -43,11 +47,11 @@ app.get('/api/config/google', (req, res) => {
 });
 
 const __dirname = path.resolve();
- app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 app.get('*', (req, res) =>
-    res.sendFile(path.join(__dirname, '../lala-frontend/public/index.html'))
+    res.sendFile(path.join(__dirname, '/frontend/public/index.html'))
 );
 
 // app.get('/', (req, res) => {
@@ -55,10 +59,10 @@ app.get('*', (req, res) =>
 // });
 
 app.use((err, req, res) => {
-    console.log(req,'req');
-    res.status && res.status (500).send({ message: err.message });
-   
-   
+    console.log(req, 'req');
+    res.status && res.status(500).send({ message: err.message });
+
+
 });
 const port = process.env.PORT || 5000;
 

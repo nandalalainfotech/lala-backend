@@ -6,6 +6,8 @@ import { isAuth, isSellerOrAdmin, isAdmin } from '../utils.js';
 
 import User from '../Models/userModel.js';
 import Product from '../Models/productModel.js';
+import Women from '../Models/womenModel.js';
+import Kid from '../Models/kidModel.js';
  
 
 const orderRouter = express.Router();
@@ -68,7 +70,23 @@ orderRouter.get(
         },
       },
     ]);
-    res.send({ users, orders, dailyOrders,productCategories });
+    const womenCategories = await Women.aggregate([
+      {
+        $group: {
+          _id: '$category',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const kidCategories = await Kid.aggregate([
+      {
+        $group: {
+          _id: '$category',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    res.send({ users, orders, dailyOrders,productCategories,womenCategories,kidCategories });
   })
 );
 orderRouter.get(
