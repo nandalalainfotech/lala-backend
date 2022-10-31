@@ -1,13 +1,13 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import data from '../data.js';
-import Product from '../Models/productModel.js';
+import Women from '../Models/womenModel.js';
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
 
-const productRouter = express.Router();
+const womenRouter = express.Router();
 
-productRouter.get(
+womenRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
     const pageSize = 4;
@@ -30,7 +30,7 @@ productRouter.get(
 
     const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
     const sellerFilter = seller ? { seller } : {};
-    const categoryFilter = category ? { category } : {};
+    const categoryFilter = category ? { category} : {};
     const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
     const ratingFilter = rating ? { rating: { $gte: rating } } : {};
     const sortOrder =
@@ -41,15 +41,15 @@ productRouter.get(
           : order === 'toprated'
             ? { rating: -1 }
             : { _id: -1 };
-    const count = await Product.count({
+    const count = await Women.count({
       ...sellerFilter,
       ...nameFilter,
       ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     });
-    // const products = await Product.find({ ...sellerFilter });
-    const products = await Product.find({
+    // const womens = await Women.find({ ...sellerFilter });
+    const womens = await Women.find({
       ...sellerFilter,
       ...nameFilter,
       ...categoryFilter,
@@ -58,37 +58,37 @@ productRouter.get(
     })
       .populate('seller', 'seller.name seller.logo')
       //     .sort(sortOrder);
-      //   res.send(products);
+      //   res.send(womens);
       .sort(sortOrder)
       .skip(pageSize * (page - 1))
       .limit(pageSize);
-    res.send({ products, page, pages: Math.ceil(count / pageSize) });
+    res.send({ womens, page, pages: Math.ceil(count / pageSize) });
   })
 );
 
 
-productRouter.get(
+womenRouter.get(
   '/categories',
   expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find().distinct('category');
+    const categories = await Women.find().distinct('category');
     res.send(categories);
   })
 );
 
-productRouter.get(
+womenRouter.get(
   '/seed',
   expressAsyncHandler(async (req, res) => {
-    await Product.remove({});
-    // const createdProducts = await Product.insertMany(data.products);
-    // res.send({ createdProducts });
+    await Women.remove({});
+    // const createdWomens = await Women.insertMany(data.womens);
+    // res.send({ createdWomens });
     const seller = await User.findOne({ isSeller: true });
     if (seller) {
-      const products = data.products.map((product) => ({
-        ...product,
+      const womens = data.womens.map((women) => ({
+        ...women,
         seller: seller._id,
       }));
-      const createdProducts = await Product.insertMany(products);
-      res.send({ createdProducts });
+      const createdWomens = await Women.insertMany(womens);
+      res.send({ createdWomens });
     } else {
       res
         .status(500)
@@ -97,29 +97,29 @@ productRouter.get(
   })
 );
 
-productRouter.get(
+womenRouter.get(
   '/:id',
   expressAsyncHandler(async (req, res) => {
-    // const product = await Product.findById(req.params.id);
-    const product = await Product.findById(req.params.id).populate(
+    // const women = await Women.findById(req.params.id);
+    const women = await Women.findById(req.params.id).populate(
       'seller',
       'seller.name seller.logo seller.rating seller.numReviews'
     );
-    if (product) {
-      res.send(product);
+    if (women) {
+      res.send(women);
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Women Not Found' });
     }
   })
 );
 
-productRouter.post(
+womenRouter.post(
   '/',
   isAuth,
   isAdmin,
   isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-    const product = new Product({
+    const women = new Women({
       name: 'sample name ' + Date.now(),
       seller: req.user._id,
       image: '/image/p1.jpg',
@@ -131,70 +131,57 @@ productRouter.post(
       numReviews: 0,
       description: 'sample description',
     });
-    const createdProduct = await product.save();
-    res.send({ message: 'Product Created', product: createdProduct });
+    const createdWomen = await women.save();
+    res.send({ message: 'Women Created', women: createdWomen });
   })
 );
-productRouter.put(
+womenRouter.put(
   '/:id',
   isAuth,
   isAdmin,
   isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-    if (product) {
-      console.log('product');
-      product.name = req.body.name;
-      product.price = req.body.price;
-      // product.image = req.body.image;
-
-      // product.images = req.body.images;
-
-      if (req.body.image.image) {
-        product.fileId = req.body.image.image._id;
-        product.image = req.body.image.image.path;
-      } else if (req.body.image.audio) {
-        product.fileId = req.body.image.audio._id;
-        product.audio = req.body.image.audio.path;
-      } else if (req.body.image.video) {
-        product.fileId = req.body.image.video._id;
-        product.video = req.body.image.video.path;
-      }
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.description = req.body.description;
-      const updatedProduct = await product.save();
-      res.send({ message: 'Product Updated', product: updatedProduct });
+    const womenId = req.params.id;
+    const women = await Women.findById(womenId);
+    if (women) {
+      women.name = req.body.name;
+      women.price = req.body.price;
+      women.image = req.body.image;
+      women.images = req.body.images;
+      women.category = req.body.category;
+      women.brand = req.body.brand;
+      women.countInStock = req.body.countInStock;
+      women.description = req.body.description;
+      const updatedWomen = await women.save();
+      res.send({ message: 'Women Updated', women: updatedWomen });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Women Not Found' });
     }
   })
 );
-productRouter.delete(
+womenRouter.delete(
   '/:id',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
-    if (product) {
-      const deleteProduct = await product.remove();
-      res.send({ message: 'Product Deleted', product: deleteProduct });
+    const women = await Women.findById(req.params.id);
+    if (women) {
+      const deleteWomen = await women.remove();
+      res.send({ message: 'Women Deleted', women: deleteWomen });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Women Not Found' });
     }
   })
 );
 
-productRouter.post(
+womenRouter.post(
   '/:id/reviews',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-    if (product) {
-      if (product.reviews.find((x) => x.name === req.user.name)) {
+    const womenId = req.params.id;
+    const women = await Women.findById(womenId);
+    if (women) {
+      if (women.reviews.find((x) => x.name === req.user.name)) {
         return res
           .status(400)
           .send({ message: 'You already submitted a review' });
@@ -204,20 +191,20 @@ productRouter.post(
         rating: Number(req.body.rating),
         comment: req.body.comment,
       };
-      product.reviews.push(review);
-      product.numReviews = product.reviews.length;
-      product.rating =
-        product.reviews.reduce((a, c) => c.rating + a, 0) /
-        product.reviews.length;
-      const updatedProduct = await product.save();
+      women.reviews.push(review);
+      women.numReviews = women.reviews.length;
+      women.rating =
+        women.reviews.reduce((a, c) => c.rating + a, 0) /
+        women.reviews.length;
+      const updatedWomen = await women.save();
       res.status(201).send({
         message: 'Review Created',
-        review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
+        review: updatedWomen.reviews[updatedWomen.reviews.length - 1],
       });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Women Not Found' });
     }
   })
 );
 
-export default productRouter;
+export default womenRouter;
