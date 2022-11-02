@@ -23,6 +23,11 @@ const orderSchema = new mongoose.Schema(
           ref: 'Kid',
           required: true,
         },
+        kid: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Tshirt',
+          required: true,
+        },
       },
     ],
     shippingAddress: {

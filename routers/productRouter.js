@@ -147,20 +147,20 @@ productRouter.put(
       console.log('product');
       product.name = req.body.name;
       product.price = req.body.price;
-      // product.image = req.body.image;
+      product.image = req.body.image;
 
-      // product.images = req.body.images;
+      product.images = req.body.images;
 
-      if (req.body.image.image) {
-        product.fileId = req.body.image.image._id;
-        product.image = req.body.image.image.path;
-      } else if (req.body.image.audio) {
-        product.fileId = req.body.image.audio._id;
-        product.audio = req.body.image.audio.path;
-      } else if (req.body.image.video) {
-        product.fileId = req.body.image.video._id;
-        product.video = req.body.image.video.path;
-      }
+      // if (req.body.image.image) {
+      //   product.fileId = req.body.image.image._id;
+      //   product.image = req.body.image.image.path;
+      // } else if (req.body.image.audio) {
+      //   product.fileId = req.body.image.audio._id;
+      //   product.audio = req.body.image.audio.path;
+      // } else if (req.body.image.video) {
+      //   product.fileId = req.body.image.video._id;
+      //   product.video = req.body.image.video.path;
+      // }
       product.category = req.body.category;
       product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;

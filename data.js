@@ -206,6 +206,111 @@ const data = {
       description: "high quality product",
     },
   ],
+
+  casualshirts: [
+    {
+
+      name: 'line casual-shirt',
+      category: 'Casual Shirts',
+      image: '/image/casual5.jpg',
+      price: 120,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'alvi casual-shirt',
+      category: 'casual Shirts',
+      image: '/image/casual2.jpg',
+      price: 100,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yark casual-shirt',
+      category: 'Casual Shirts',
+      image: '/image/casual3.jpg',
+      price: 220,
+      countInStock: 0,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'ambar casual-shirt',
+      category: 'Casual Shirts',
+      image: '/image/casual6.jpg',
+      price: 78,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+
+  formalshirts: [
+    {
+   
+      name: 'line formal-shirt',
+      category: 'Formal Shirts',
+      image: '/image/formal6.jpg',
+      price: 120,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+ 
+      name: 'alvi formal-shirt',
+      category: 'Formal Shirts',
+      image: '/image/formal2.jpg',
+      price: 100,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+      
+      name: 'yark formal-shirt',
+      category: 'Formal Shirts',
+      image: '/image/formal3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+      
+      name: 'ambar formal-shirt',
+      category: 'Formal Shirts',
+      image: '/image/formal4.jpg',
+      price: 78,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+  ],
   Saree: [
     {
       _id: "7",

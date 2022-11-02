@@ -8,6 +8,8 @@ import sareeRouter from './routers/sareeRouter.js';
 import womenRouter from './routers/womenRouter.js';
 import kidRouter from './routers/kidRouter.js';
 import tshirtRouter from './routers/TshirtRouter.js';
+import casualshirtRouter from './routers/CasualshirtRouter.js';
+import formalshirtRouter from './routers/FormalshirtRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import path from 'path';
 import uploadRouter from './routers/uploadRouter.js';
@@ -36,6 +38,8 @@ app.use('/api/products', productRouter);
 app.use('/api/womens', womenRouter);
 app.use('/api/kids', kidRouter)
 app.use('/api/tshirts', tshirtRouter);
+app.use('/api/casualshirts', casualshirtRouter);
+app.use('/api/formalshirts', formalshirtRouter);
 app.use('/api/sarees', sareeRouter);
 app.use('/api/orders', orderRouter);
 app.get('/api/config/paypal', (req, res) => {
