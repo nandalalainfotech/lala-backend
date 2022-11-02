@@ -4,11 +4,11 @@ import data from '../data.js';
 
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
-import Tshirt from '../Models/tshirtModel.js';
+import Casualshirt from '../Models/casualshirtModel.js';
 
-const tshirtRouter = express.Router();
+const casualshirtRouter = express.Router();
 
-tshirtRouter.get(
+casualshirtRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const pageSize = 4;
@@ -39,7 +39,7 @@ tshirtRouter.get(
                     : order === 'toprated'
                         ? { rating: -1 }
                         : { _id: -1 };
-        const count = await Tshirt.count({
+        const count = await Casualshirt.count({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -47,7 +47,7 @@ tshirtRouter.get(
             ...ratingFilter,
         });
         // const products = await Product.find({ ...sellerFilter });
-        const tshirts = await Tshirt.find({
+        const casualshirts = await Casualshirt.find({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -60,33 +60,33 @@ tshirtRouter.get(
             .sort(sortOrder)
             .skip(pageSize * (page - 1))
             .limit(pageSize);
-        res.send({ tshirts, page, pages: Math.ceil(count / pageSize) });
+        res.send({ casualshirts, page, pages: Math.ceil(count / pageSize) });
     })
 );
 
 
-tshirtRouter.get(
+casualshirtRouter.get(
     '/categories',
     expressAsyncHandler(async (req, res) => {
-        const categories = await Tshirt.find().distinct('category');
+        const categories = await Casualshirt.find().distinct('category');
         res.send(categories);
     })
 );
 
-tshirtRouter.get(
+casualshirtRouter.get(
     '/seed',
     expressAsyncHandler(async (req, res) => {
-        await Tshirt.remove({});
+        await Casualshirt.remove({});
         // const createdProducts = await Product.insertMany(data.products);
         // res.send({ createdProducts });
         const seller = await User.findOne({ isSeller: true });
         if (seller) {
-            const tshirts = data.tshirts.map((tshirt) => ({
-                ...tshirt,
+            const casualshirts = data.casualshirts.map((casualshirt) => ({
+                ...casualshirt,
                 seller: seller._id,
             }));
-            const createdTshirts = await Tshirt.insertMany(tshirts);
-            res.send({ createdTshirts });
+            const createdCasualshirts = await Casualshirt.insertMany(casualshirts);
+            res.send({ createdCasualshirts });
         } else {
             res
                 .status(500)
@@ -95,29 +95,29 @@ tshirtRouter.get(
     })
 );
 
-tshirtRouter.get(
+casualshirtRouter.get(
     '/:id',
     expressAsyncHandler(async (req, res) => {
         // const product = await Product.findById(req.params.id);
-        const tshirt = await Tshirt.findById(req.params.id).populate(
+        const casualshirt = await Casualshirt.findById(req.params.id).populate(
             'seller',
             'seller.name seller.logo seller.rating seller.numReviews'
         );
-        if (tshirt) {
-            res.send(tshirt);
+        if (casualshirt) {
+            res.send(casualshirt);
         } else {
-            res.status(404).send({ message: 'tshirt Not Found' });
+            res.status(404).send({ message: 'casualshirt Not Found' });
         }
     })
 );
 
-tshirtRouter.post(
+casualshirtRouter.post(
     '/',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const tshirt = new Tshirt({
+        const casualshirt = new Casualshirt({
             name: 'sample name ' + Date.now(),
             seller: req.user._id,
             image: '/image/p1.jpg',
@@ -129,25 +129,25 @@ tshirtRouter.post(
             numReviews: 0,
             description: 'sample description',
         });
-        const createdTshirt = await tshirt.save();
-        res.send({ message: 'Tshirt Created', tshirt: createdTshirt });
+        const createdCasualshirt = await casualshirt.save();
+        res.send({ message: 'Casualshirt Created', casualshirt: createdCasualshirt });
     })
 );
-tshirtRouter.put(
+casualshirtRouter.put(
     '/:id',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const tshirtId = req.params.id;
-        const tshirt = await Tshirt.findById(tshirtId);
-        if (tshirt) {
-            console.log('tshirt');
-            tshirt.name = req.body.name;
-            tshirt.price = req.body.price;
-            tshirt.image = req.body.image;
+        const casualshirtId = req.params.id;
+        const casualshirt = await Casualshirt.findById(casualshirtId);
+        if (casualshirt) {
+            console.log('casualshirt');
+            casualshirt.name = req.body.name;
+            casualshirt.price = req.body.price;
+            casualshirt.image = req.body.image;
 
-            tshirt.images = req.body.images;
+            casualshirt.images = req.body.images;
 
             //   if (req.body.image.image) {
             //     product.fileId = req.body.image.image._id;
@@ -159,40 +159,40 @@ tshirtRouter.put(
             //     product.fileId = req.body.image.video._id;
             //     product.video = req.body.image.video.path;
             //   }
-            tshirt.category = req.body.category;
-            tshirt.brand = req.body.brand;
-            tshirt.countInStock = req.body.countInStock;
-            tshirt.description = req.body.description;
-            const updatedTshirt = await tshirt.save();
-            res.send({ message: 'Tshirt Updated', tshirt: updatedTshirt });
+            casualshirt.category = req.body.category;
+            casualshirt.brand = req.body.brand;
+            casualshirt.countInStock = req.body.countInStock;
+            casualshirt.description = req.body.description;
+            const updatedCasualshirt = await casualshirt.save();
+            res.send({ message: 'Casualshirt Updated', casualshirt: updatedCasualshirt });
         } else {
-            res.status(404).send({ message: 'Tshirt Not Found' });
+            res.status(404).send({ message: 'Casualshirt Not Found' });
         }
     })
 );
-tshirtRouter.delete(
+casualshirtRouter.delete(
     '/:id',
     isAuth,
     isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const tshirt = await Tshirt.findById(req.params.id);
-        if (tshirtt) {
-            const deleteTshirt = await tshirt.remove();
-            res.send({ message: 'Tshirt Deleted', tshirt: deleteTshirt });
+        const casualshirt = await Casualshirt.findById(req.params.id);
+        if (casualshirt) {
+            const deleteCasualshirt = await casualshirt.remove();
+            res.send({ message: 'Casualshirt Deleted', casualshirt: deleteCasualshirt });
         } else {
-            res.status(404).send({ message: 'Tshirt Not Found' });
+            res.status(404).send({ message: 'Casualshirt Not Found' });
         }
     })
 );
 
-tshirtRouter.post(
+casualshirtRouter.post(
     '/:id/reviews',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        const tshirtId = req.params.id;
-        const tshirt = await Tshirt.findById(tshirtId);
-        if (tshirt) {
-            if (tshirt.reviews.find((x) => x.name === req.user.name)) {
+        const casualshirtId = req.params.id;
+        const casualshirt = await Casualshirt.findById(casualshirtId);
+        if (casualshirt) {
+            if (casualshirt.reviews.find((x) => x.name === req.user.name)) {
                 return res
                     .status(400)
                     .send({ message: 'You already submitted a review' });
@@ -202,20 +202,20 @@ tshirtRouter.post(
                 rating: Number(req.body.rating),
                 comment: req.body.comment,
             };
-            tshirt.reviews.push(review);
-            tshirt.numReviews = tshirt.reviews.length;
-            tshirt.rating =
-                tshirt.reviews.reduce((a, c) => c.rating + a, 0) /
-                tshirt.reviews.length;
-            const updatedTshirt = await tshirt.save();
+            casualshirt.reviews.push(review);
+            casualshirt.numReviews = casualshirt.reviews.length;
+            casualshirt.rating =
+                casualshirt.reviews.reduce((a, c) => c.rating + a, 0) /
+                casualshirt.reviews.length;
+            const updatedCasualshirt = await casualshirt.save();
             res.status(201).send({
                 message: 'Review Created',
-                review: updatedTshirt.reviews[updatedTshirt.reviews.length - 1],
+                review: updatedCasualshirt.reviews[updatedCasualshirt.reviews.length - 1],
             });
         } else {
-            res.status(404).send({ message: 'Tshirt Not Found' });
+            res.status(404).send({ message: 'Casualshirt Not Found' });
         }
     })
 );
 
-export default tshirtRouter;
+export default casualshirtRouter;

@@ -4,11 +4,11 @@ import data from '../data.js';
 
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
-import Tshirt from '../Models/tshirtModel.js';
+import Formalshirt from '../Models/formalshirtModel.js';
 
-const tshirtRouter = express.Router();
+const formalshirtRouter = express.Router();
 
-tshirtRouter.get(
+formalshirtRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const pageSize = 4;
@@ -39,7 +39,7 @@ tshirtRouter.get(
                     : order === 'toprated'
                         ? { rating: -1 }
                         : { _id: -1 };
-        const count = await Tshirt.count({
+        const count = await Formalshirt.count({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -47,7 +47,7 @@ tshirtRouter.get(
             ...ratingFilter,
         });
         // const products = await Product.find({ ...sellerFilter });
-        const tshirts = await Tshirt.find({
+        const formalshirts = await Formalshirt.find({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -60,33 +60,33 @@ tshirtRouter.get(
             .sort(sortOrder)
             .skip(pageSize * (page - 1))
             .limit(pageSize);
-        res.send({ tshirts, page, pages: Math.ceil(count / pageSize) });
+        res.send({ formalshirts, page, pages: Math.ceil(count / pageSize) });
     })
 );
 
 
-tshirtRouter.get(
+formalshirtRouter.get(
     '/categories',
     expressAsyncHandler(async (req, res) => {
-        const categories = await Tshirt.find().distinct('category');
+        const categories = await Formalshirt.find().distinct('category');
         res.send(categories);
     })
 );
 
-tshirtRouter.get(
+formalshirtRouter.get(
     '/seed',
     expressAsyncHandler(async (req, res) => {
-        await Tshirt.remove({});
+        await Formalshirt.remove({});
         // const createdProducts = await Product.insertMany(data.products);
         // res.send({ createdProducts });
         const seller = await User.findOne({ isSeller: true });
         if (seller) {
-            const tshirts = data.tshirts.map((tshirt) => ({
-                ...tshirt,
+            const formalshirts = data.formalshirts.map((formalshirt) => ({
+                ...formalshirt,
                 seller: seller._id,
             }));
-            const createdTshirts = await Tshirt.insertMany(tshirts);
-            res.send({ createdTshirts });
+            const createdFormalshirts = await Formalshirt.insertMany(formalshirts);
+            res.send({ createdFormalshirts });
         } else {
             res
                 .status(500)
@@ -95,29 +95,29 @@ tshirtRouter.get(
     })
 );
 
-tshirtRouter.get(
+formalshirtRouter.get(
     '/:id',
     expressAsyncHandler(async (req, res) => {
         // const product = await Product.findById(req.params.id);
-        const tshirt = await Tshirt.findById(req.params.id).populate(
+        const formalshirt = await Formalshirt.findById(req.params.id).populate(
             'seller',
             'seller.name seller.logo seller.rating seller.numReviews'
         );
-        if (tshirt) {
-            res.send(tshirt);
+        if (formalshirt) {
+            res.send(formalshirt);
         } else {
-            res.status(404).send({ message: 'tshirt Not Found' });
+            res.status(404).send({ message: 'formalshirt Not Found' });
         }
     })
 );
 
-tshirtRouter.post(
+formalshirtRouter.post(
     '/',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const tshirt = new Tshirt({
+        const formalshirt = new Formalshirt({
             name: 'sample name ' + Date.now(),
             seller: req.user._id,
             image: '/image/p1.jpg',
@@ -129,25 +129,25 @@ tshirtRouter.post(
             numReviews: 0,
             description: 'sample description',
         });
-        const createdTshirt = await tshirt.save();
-        res.send({ message: 'Tshirt Created', tshirt: createdTshirt });
+        const createdFormalshirt = await formalshirt.save();
+        res.send({ message: 'Formalshirt Created', formalshirt: createdFormalshirt });
     })
 );
-tshirtRouter.put(
+formalshirtRouter.put(
     '/:id',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const tshirtId = req.params.id;
-        const tshirt = await Tshirt.findById(tshirtId);
-        if (tshirt) {
-            console.log('tshirt');
-            tshirt.name = req.body.name;
-            tshirt.price = req.body.price;
-            tshirt.image = req.body.image;
+        const formalshirtId = req.params.id;
+        const formalshirt = await Formalshirt.findById(formalshirtId);
+        if (formalshirt) {
+            console.log('formalshirt');
+            formalshirt.name = req.body.name;
+            formalshirt.price = req.body.price;
+            formalshirt.image = req.body.image;
 
-            tshirt.images = req.body.images;
+            formalshirt.images = req.body.images;
 
             //   if (req.body.image.image) {
             //     product.fileId = req.body.image.image._id;
@@ -159,40 +159,40 @@ tshirtRouter.put(
             //     product.fileId = req.body.image.video._id;
             //     product.video = req.body.image.video.path;
             //   }
-            tshirt.category = req.body.category;
-            tshirt.brand = req.body.brand;
-            tshirt.countInStock = req.body.countInStock;
-            tshirt.description = req.body.description;
-            const updatedTshirt = await tshirt.save();
-            res.send({ message: 'Tshirt Updated', tshirt: updatedTshirt });
+            formalshirt.category = req.body.category;
+            formalshirt.brand = req.body.brand;
+            formalshirt.countInStock = req.body.countInStock;
+            formalshirt.description = req.body.description;
+            const updatedFormalshirt = await formalshirt.save();
+            res.send({ message: 'Formalshirt Updated', formalshirt: updatedFormalshirt });
         } else {
-            res.status(404).send({ message: 'Tshirt Not Found' });
+            res.status(404).send({ message: 'Formalshirt Not Found' });
         }
     })
 );
-tshirtRouter.delete(
+formalshirtRouter.delete(
     '/:id',
     isAuth,
     isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const tshirt = await Tshirt.findById(req.params.id);
-        if (tshirtt) {
-            const deleteTshirt = await tshirt.remove();
-            res.send({ message: 'Tshirt Deleted', tshirt: deleteTshirt });
+        const formalshirt = await Formalshirt.findById(req.params.id);
+        if (formalshirtt) {
+            const deleteFormalshirt = await formalshirt.remove();
+            res.send({ message: 'Formalshirt Deleted', formalshirt: deleteFormalshirt });
         } else {
-            res.status(404).send({ message: 'Tshirt Not Found' });
+            res.status(404).send({ message: 'Formalshirt Not Found' });
         }
     })
 );
 
-tshirtRouter.post(
+formalshirtRouter.post(
     '/:id/reviews',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        const tshirtId = req.params.id;
-        const tshirt = await Tshirt.findById(tshirtId);
-        if (tshirt) {
-            if (tshirt.reviews.find((x) => x.name === req.user.name)) {
+        const formalshirtId = req.params.id;
+        const formalshirt = await Formalshirt.findById(formalshirtId);
+        if (formalshirt) {
+            if (formalshirt.reviews.find((x) => x.name === req.user.name)) {
                 return res
                     .status(400)
                     .send({ message: 'You already submitted a review' });
@@ -202,20 +202,20 @@ tshirtRouter.post(
                 rating: Number(req.body.rating),
                 comment: req.body.comment,
             };
-            tshirt.reviews.push(review);
-            tshirt.numReviews = tshirt.reviews.length;
-            tshirt.rating =
-                tshirt.reviews.reduce((a, c) => c.rating + a, 0) /
-                tshirt.reviews.length;
-            const updatedTshirt = await tshirt.save();
+            formalshirt.reviews.push(review);
+            formalshirt.numReviews = formalshirt.reviews.length;
+            formalshirt.rating =
+            formalshirt.reviews.reduce((a, c) => c.rating + a, 0) /
+            formalshirt.reviews.length;
+            const updatedFormalshirt = await formalshirt.save();
             res.status(201).send({
                 message: 'Review Created',
-                review: updatedTshirt.reviews[updatedTshirt.reviews.length - 1],
+                review: updatedFormalshirt.reviews[updatedFormalshirt.reviews.length - 1],
             });
         } else {
-            res.status(404).send({ message: 'Tshirt Not Found' });
+            res.status(404).send({ message: 'Formalshirt Not Found' });
         }
     })
 );
 
-export default tshirtRouter;
+export default formalshirtRouter;
