@@ -311,6 +311,293 @@ const data = {
     },
 
   ],
+
+
+  sweaters: [
+    {
+
+      name: 'anvi sweater',
+      category: 'sweaters',
+      image: '/image/sw1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'aruviya sweater',
+      category: 'sweaters',
+      image: '/image/sw2.jpg',
+      price: 100,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yarky sweater',
+      category: 'sweaters',
+      image: '/image/sw3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'lalachy  sweater',
+      category: 'sweater',
+      image: '/image/sw4.jpg',
+      price: 78,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+
+  jackets: [
+    {
+
+      name: 'anviy jacket',
+      category: 'jacketss',
+      image: '/image/ja1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'aruviyas jacket',
+      category: 'jackets',
+      image: '/image/ja2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yar jacket',
+      category: 'jackets',
+      image: '/image/ja3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'lalachy  jacket',
+      category: 'sweater',
+      image: '/image/ja4.jpg',
+      price: 78,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+  blazers: [
+    {
+
+      name: 'alvi blazer',
+      category: 'blazers',
+      image: '/image/bl1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yogi blazer',
+      category: 'blazers',
+      image: '/image/bl2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yogo blazer',
+      category: 'blazers',
+      image: '/image/bl6.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' scemy blazer',
+      category: 'blazer',
+      image: '/image/bl4.jpg',
+      price: 78,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' formi blazer',
+      category: 'blazer',
+      image: '/image/bl5.jpg',
+      price: 78,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+  suits: [
+    {
+
+      name: 'goodes suit',
+      category: 'suits',
+      image: '/image/suit1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yogi suit',
+      category: 'suits',
+      image: '/image/suit2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yahoo suit',
+      category: 'suits',
+      image: '/image/suit3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' scemy suit',
+      category: 'suits',
+      image: '/image/suit4.jpg',
+      price: 978,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' formi suit',
+      category: 'suits',
+      image: '/image/suit7.jpg',
+      price: 578,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+  rainjackets: [
+    {
+
+      name: 'woodes rainjacket',
+      category: 'rainjackets',
+      image: '/image/rain1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yogi rainjacket',
+      category: 'rainjackets',
+      image: '/image/rain2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yahoo rainjacket',
+      category: 'rainjackets',
+      image: '/image/rain3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' scemy rain jacket',
+      category: 'rainjackets',
+      image: '/image/rain4.jpg',
+      price: 578,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+    
+
+  ],
   Saree: [
     {
       _id: "7",

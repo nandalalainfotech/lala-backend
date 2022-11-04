@@ -10,6 +10,11 @@ import kidRouter from './routers/kidRouter.js';
 import tshirtRouter from './routers/TshirtRouter.js';
 import casualshirtRouter from './routers/CasualshirtRouter.js';
 import formalshirtRouter from './routers/FormalshirtRouter.js';
+import jacketRouter from './routers/JacketRouter.js';
+import sweaterRouter from './routers/SweaterRouter.js';
+import rainjacketRouter from './routers/RainJacketRouter.js';
+import blazerRouter from './routers/BlazerRouter.js';
+import suitRouter from './routers/SuitRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import path from 'path';
 import uploadRouter from './routers/uploadRouter.js';
@@ -40,6 +45,11 @@ app.use('/api/kids', kidRouter)
 app.use('/api/tshirts', tshirtRouter);
 app.use('/api/casualshirts', casualshirtRouter);
 app.use('/api/formalshirts', formalshirtRouter);
+app.use('/api/jackets', jacketRouter);
+app.use('/api/sweaters', sweaterRouter);
+app.use('/api/blazers', blazerRouter);
+app.use('/api/rainjackets', rainjacketRouter);
+app.use('/api/suits', suitRouter);
 app.use('/api/sarees', sareeRouter);
 app.use('/api/orders', orderRouter);
 app.get('/api/config/paypal', (req, res) => {
