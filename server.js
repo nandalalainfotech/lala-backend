@@ -20,20 +20,22 @@ import path from 'path';
 import uploadRouter from './routers/uploadRouter.js';
 import http from 'http';
 import { Server } from 'socket.io';
+import bodyParser from "body-parser";
 
 
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb+srv://nandalala:Spartans!23@cluster0.ujwabrm.mongodb.net/laladb?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
 
-});
+    }).then(() => console.log('MongoDB connection established.'))
+    .catch((error) => console.error("MongoDB connection failed:", error.message))
 
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 
@@ -65,18 +67,11 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 app.get('*', (req, res) =>
-    res.sendFile(path.join(__dirname, '/frontend/public/index.html'))
+    res.sendFile(path.join(__dirname, '../lala-frontend/public/index.html'))
 );
 
-// app.get('/', (req, res) => {
-//   res.send('Server is ready');
-// });
-
 app.use((err, req, res) => {
-    console.log(req, 'req');
     res.status && res.status(500).send({ message: err.message });
-
-
 });
 const port = process.env.PORT || 5000;
 
@@ -86,12 +81,10 @@ const io = new Server(httpServer, { cors: { origin: '*' } });
 const users = [];
 
 io.on('connection', (socket) => {
-    console.log('connection', socket.id);
     socket.on('disconnect', () => {
         const user = users.find((x) => x.socketId === socket.id);
         if (user) {
             user.online = false;
-            console.log('Offline', user.name);
             const admin = users.find((x) => x.isAdmin && x.online);
             if (admin) {
                 io.to(admin.socketId).emit('updateUser', user);
@@ -112,7 +105,6 @@ io.on('connection', (socket) => {
         } else {
             users.push(updatedUser);
         }
-        console.log('Online', user.name);
         const admin = users.find((x) => x.isAdmin && x.online);
         if (admin) {
             io.to(admin.socketId).emit('updateUser', updatedUser);

@@ -1,138 +1,53 @@
-// import multer from 'multer';
-// import express from 'express';
-// import { isAuth } from '../utils.js';
-
-// const uploadRouter = express.Router();
-
-// const storage = multer.diskStorage({
-
-//   destination(req, file, cb) {
-//     console.log('multer');
-
-//     cb(null, 'uploads/');
-//   },
-//   filename(req, file, cb) {
-
-//     cb(null, `${Date.now()}.jpg`);
-//   },
-// });
-
-// const upload = multer({ storage });
-
-// uploadRouter.post('/', isAuth, upload.single('image'), (req, res) => {
-
-//   res.send(`/${req.file.path}`);
-// });
-
-// export default uploadRouter;
-
-
-
-
-
-
-
-
-// import multer from "multer";
-// import express from "express";
-// import { isAuth } from '../utils.js';
-// import path from "path";
-// import { GridFsStorage } from "multer-gridfs-storage";
-// import crypto from "crypto";
-
-// import Images from "../Models/imagesmodel.js";
-
-
-// const uploadRouter = express.Router();
-// const url = 'mongodb://localhost:27017';
-// const storage = new GridFsStorage({
-
-//   url: url,
-//   file: (req, file) => {
-//     return new Promise((resolve, reject) => {
-//       crypto.randomBytes(16, (err, buf) => {
-//         if (err) {
-//           return reject(err);
-//         }
-//         const filename = buf.toString('hex') + path.extname(file.originalname);
-//         const fileInfo = {
-//           filename: filename,
-//           bucketName: 'uploads',
-//         };
-//         resolve(fileInfo);
-//       });
-//     });
-//   },
-// });
-// console.log("STORAGE");
-// const upload = multer({ storage });
-
-// uploadRouter.post('/', isAuth, upload.single('image'), (async (req, res) => {
-
-
-//   const extension = req.file.originalname.split('.')[1]
-
-//   // if(file){
-//   const image = new Images({
-//     content: req.file.path,
-//     fieldname: req.file.fieldname,
-//     originalname: req.file.originalname,
-//     filename: req.file.filename,
-//     status: req.body.status,
-//     // mimetype : req.body.mimetype,
-//     // encoding : req.body.encoding,
-//   });
-//   const imageUploaded = await image.save();
-//   res.send({ message: 'Image Uploaded', image: imageUploaded });
-//   //   }
-//   //  else{
-//   //   console.log("this is not image file==>");
-//   //  }
-// })
-// );
-
-
-// export default uploadRouter;
-
-
-
-
 import multer from 'multer';
 import express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../utils.js';
-import upload from "../middleware/audio.js";
-import Images from '../Models/imagesModel.js';
+import Image from '../Models/imageModel.js';
+import upload from "../middleware/image.js";
+import Grid from 'gridfs-stream';
+import mongoose from 'mongoose';
 
 const uploadRouter = express.Router();
-uploadRouter.post('/', isAuth, upload.single('image'),(async (req, res) => {
-  console.log("file upload==>",req.file);
-  const extension = req.file.originalname.split('.')[1]
-  console.log("extension==>",extension);
-  const image = new Images({
-    content:req.file.path,
-    fieldname : req.file.fieldname,
-    originalname : req.file.originalname,
-    filename : req.file.filename,
-    status : req.body.status,
-    // mimetype : req.body.mimetype,
-    // encoding : req.body.encoding,
-  });
-  const imageUploaded = await image.save();
-  res.send({ message: 'Image Uploaded', image: imageUploaded });
-})
-);
+
+uploadRouter.post('/', isAuth, upload.single('image'), (async(req, res) => {
+
+    const image = new Image({
+        fieldname: req.file.fieldname,
+        originalname: req.file.originalname,
+        filename: req.file.filename,
+        status: req.body.status,
+        // mimetype : req.body.mimetype,
+        // encoding : req.body.encoding,
+    });
+    const imageUploaded = await image.save();
+    res.send({ message: 'image Uploaded', image: imageUploaded });
+}));
+
+uploadRouter.get('/list', expressAsyncHandler(async(req, res) => {
+    const images = await Image.find();
+    res.send(images);
+}));
+
+uploadRouter.get('/show/:id', expressAsyncHandler(async(req, res) => {
+
+    const id = req.params.id;
+    const images = await Image.find({ _id: id });
+
+    var filename = images[0].filename;
+    const conn = mongoose.connection;
+    var gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+    gfs.files.find({ filename: filename }).toArray((err, files) => {
+        if (!files || files.length === 0) {
+            return res.status(404).json({
+                err: "no files exist"
+            });
+        }
+        var bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+            bucketName: 'uploads',
+        })
+        var readstream = bucket.openDownloadStreamByName(filename);
+        return readstream.pipe(res);
+    });
+}));
 export default uploadRouter;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
