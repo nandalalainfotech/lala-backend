@@ -18,10 +18,9 @@ const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     seller: { type: mongoose.Schema.Types.ObjectID, ref: 'User' },
-   
-    image: { type: String ,dafault:false},
-    // fileId: { type: mongoose.Schema.Types.ObjectID, ref: 'Image' },
-    images: {String},
+    image: { type: String, default: false },
+    imageFile: { type: String, default: false },
+    fileId: { type: mongoose.Schema.Types.ObjectID, ref: 'Image' },
     brand: { type: String, required: true },
     category: { type: String, required: true },
     description: { type: String, required: true },
