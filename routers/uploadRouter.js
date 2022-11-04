@@ -2,8 +2,8 @@ import multer from 'multer';
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../utils.js';
-import Image from '../Models/imageModel.js';
 import upload from "../middleware/image.js";
+import Image from '../Models/imagesModel.js';
 import Grid from 'gridfs-stream';
 import mongoose from 'mongoose';
 
