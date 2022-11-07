@@ -4,11 +4,11 @@ import data from '../data.js';
 
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
-import Formalshirt from '../Models/formalshirtModel.js';
+import Kurtas from '../Models/kurtasModel.js';
 
-const formalshirtRouter = express.Router();
+const kurtasRouter = express.Router();
 
-formalshirtRouter.get(
+kurtasRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const pageSize = 4;
@@ -39,7 +39,7 @@ formalshirtRouter.get(
                     : order === 'toprated'
                         ? { rating: -1 }
                         : { _id: -1 };
-        const count = await Formalshirt.count({
+        const count = await Kurtas.count({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -47,7 +47,7 @@ formalshirtRouter.get(
             ...ratingFilter,
         });
         // const products = await Product.find({ ...sellerFilter });
-        const formalshirts = await Formalshirt.find({
+        const kurtass = await Kurtas.find({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -60,33 +60,33 @@ formalshirtRouter.get(
             .sort(sortOrder)
             .skip(pageSize * (page - 1))
             .limit(pageSize);
-        res.send({ formalshirts, page, pages: Math.ceil(count / pageSize) });
+        res.send({ kurtass, page, pages: Math.ceil(count / pageSize) });
     })
 );
 
 
-formalshirtRouter.get(
+kurtasRouter.get(
     '/categories',
     expressAsyncHandler(async (req, res) => {
-        const categories = await Formalshirt.find().distinct('category');
+        const categories = await Kurtas.find().distinct('category');
         res.send(categories);
     })
 );
 
-formalshirtRouter.get(
+kurtasRouter.get(
     '/seed',
     expressAsyncHandler(async (req, res) => {
-        await Formalshirt.remove({});
+        await Kurtas.remove({});
         // const createdProducts = await Product.insertMany(data.products);
         // res.send({ createdProducts });
         const seller = await User.findOne({ isSeller: true });
         if (seller) {
-            const formalshirts = data.formalshirts.map((formalshirt) => ({
-                ...formalshirt,
+            const kurtass = data.kurtass.map((kurtas) => ({
+                ...kurtas,
                 seller: seller._id,
             }));
-            const createdFormalshirts = await Formalshirt.insertMany(formalshirts);
-            res.send({ createdFormalshirts });
+            const createdKurtass = await Kurtas.insertMany(kurtass);
+            res.send({ createdKurtass });
         } else {
             res
                 .status(500)
@@ -95,29 +95,29 @@ formalshirtRouter.get(
     })
 );
 
-formalshirtRouter.get(
+kurtasRouter.get(
     '/:id',
     expressAsyncHandler(async (req, res) => {
         // const product = await Product.findById(req.params.id);
-        const formalshirt = await Formalshirt.findById(req.params.id).populate(
+        const kurtas = await Kurtas.findById(req.params.id).populate(
             'seller',
             'seller.name seller.logo seller.rating seller.numReviews'
         );
-        if (formalshirt) {
-            res.send(formalshirt);
+        if (kurtas) {
+            res.send(kurtas);
         } else {
-            res.status(404).send({ message: 'formalshirt Not Found' });
+            res.status(404).send({ message: 'Kurtas Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+kurtasRouter.post(
     '/',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = new Formalshirt({
+        const kurtas = new Kurtas({
             name: 'sample name ' + Date.now(),
             seller: req.user._id,
             image: '/image/p1.jpg',
@@ -129,25 +129,25 @@ formalshirtRouter.post(
             numReviews: 0,
             description: 'sample description',
         });
-        const createdFormalshirt = await formalshirt.save();
-        res.send({ message: 'Formalshirt Created', formalshirt: createdFormalshirt });
+        const createdKurtas = await kurtas.save();
+        res.send({ message: 'Kurtas Created', kurtas: createdKurtas });
     })
 );
-formalshirtRouter.put(
+kurtasRouter.put(
     '/:id',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            console.log('formalshirt');
-            formalshirt.name = req.body.name;
-            formalshirt.price = req.body.price;
-            formalshirt.image = req.body.image;
+        const kurtasId = req.params.id;
+        const kurtas = await Kurtas.findById(kurtasId);
+        if (kurtas) {
+            console.log('kurtas');
+            kurtas.name = req.body.name;
+            kurtas.price = req.body.price;
+            kurtas.image = req.body.image;
 
-            formalshirt.images = req.body.images;
+            kurtas.images = req.body.images;
 
             //   if (req.body.image.image) {
             //     product.fileId = req.body.image.image._id;
@@ -159,40 +159,40 @@ formalshirtRouter.put(
             //     product.fileId = req.body.image.video._id;
             //     product.video = req.body.image.video.path;
             //   }
-            formalshirt.category = req.body.category;
-            formalshirt.brand = req.body.brand;
-            formalshirt.countInStock = req.body.countInStock;
-            formalshirt.description = req.body.description;
-            const updatedFormalshirt = await formalshirt.save();
-            res.send({ message: 'Formalshirt Updated', formalshirt: updatedFormalshirt });
+            kurtas.category = req.body.category;
+            kurtas.brand = req.body.brand;
+            kurtas.countInStock = req.body.countInStock;
+            kurtas.description = req.body.description;
+            const updatedKurtas = await kurtas.save();
+            res.send({ message: 'Kurtas Updated', kurtas: updatedKurtas });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Kurtas Not Found' });
         }
     })
 );
-formalshirtRouter.delete(
+kurtasRouter.delete(
     '/:id',
     isAuth,
     isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = await Formalshirt.findById(req.params.id);
-        if (formalshirt) {
-            const deleteFormalshirt = await formalshirt.remove();
-            res.send({ message: 'Formalshirt Deleted', formalshirt: deleteFormalshirt });
+        const kurtas = await Kurtas.findById(req.params.id);
+        if (kurtast) {
+            const deleteKurtas = await kurtas.remove();
+            res.send({ message: 'Kurtas Deleted', kurtas: deleteKurtas });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Kurtas Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+kurtasRouter.post(
     '/:id/reviews',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            if (formalshirt.reviews.find((x) => x.name === req.user.name)) {
+        const kurtasId = req.params.id;
+        const kurtas = await Kurtas.findById(kurtasId);
+        if (kurtas) {
+            if (kurtas.reviews.find((x) => x.name === req.user.name)) {
                 return res
                     .status(400)
                     .send({ message: 'You already submitted a review' });
@@ -202,20 +202,20 @@ formalshirtRouter.post(
                 rating: Number(req.body.rating),
                 comment: req.body.comment,
             };
-            formalshirt.reviews.push(review);
-            formalshirt.numReviews = formalshirt.reviews.length;
-            formalshirt.rating =
-            formalshirt.reviews.reduce((a, c) => c.rating + a, 0) /
-            formalshirt.reviews.length;
-            const updatedFormalshirt = await formalshirt.save();
+            kurtas.reviews.push(review);
+            kurtas.numReviews = kurtas.reviews.length;
+            kurtas.rating =
+            kurtas.reviews.reduce((a, c) => c.rating + a, 0) /
+            kurtas.reviews.length;
+            const updatedKurtas = await kurtas.save();
             res.status(201).send({
                 message: 'Review Created',
-                review: updatedFormalshirt.reviews[updatedFormalshirt.reviews.length - 1],
+                review: updatedKurtas.reviews[updatedKurtas.reviews.length - 1],
             });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Kurtas Not Found' });
         }
     })
 );
 
-export default formalshirtRouter;
+export default kurtasRouter;

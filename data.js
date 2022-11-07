@@ -598,6 +598,322 @@ const data = {
     
 
   ],
+
+  dhotis: [
+    {
+
+      name: 'goodes dhoti',
+      category: 'dhotis',
+      image: '/image/dho1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'yogily dhoti',
+      category: 'dhotis',
+      image: '/image/dho2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yahoow dhoti',
+      category: 'dhotis',
+      image: '/image/dhot3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' scemy dhoti',
+      category: 'dhotis',
+      image: '/image/dho4.jpg',
+      price: 978,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' formi dhoti',
+      category: 'dhotis',
+      image: '/image/dho5.jpg',
+      price: 578,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+
+
+
+  indians: [
+    {
+
+      name: 'welfy indis',
+      category: 'indis',
+      image: '/image/in1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'choosy indis',
+      category: 'indis',
+      image: '/image/in2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yami indis',
+      category: 'indis',
+      image: '/image/in3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' povi indis',
+      category: 'indis',
+      image: '/image/in4.jpg',
+      price: 978,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+   
+
+  ],
+  sherwanis: [
+    {
+
+      name: 'grandy sherwanis',
+      category: 'sherwanis',
+      image: '/image/sher1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'choosy sherwanis',
+      category: 'sherwanis',
+      image: '/image/sher2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yami sherwanis',
+      category: 'sherwanis',
+      image: '/image/sher4.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' povi sherwanis',
+      category: 'sherwanis',
+      image: '/image/sher5.jpg',
+      price: 978,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' waky sherwanis',
+      category: 'sherwanis',
+      image: '/image/sher7.jpg',
+      price: 578,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+
+  nehrus: [
+    {
+
+      name: 'grandy  nehrus',
+      category: ' nehrus',
+      image: '/image/nehru1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'pandyy  nehrus',
+      category: ' nehrus',
+      image: '/image/nehru2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yamiu  nehrus',
+      category: 'sherwanis',
+      image: '/image/nehru3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' povim  nehrus',
+      category: ' nehrus',
+      image: '/image/nehru4.jpg',
+      price: 978,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' waky  nehrus',
+      category: ' nehrus',
+      image: '/image/nehru5.jpg',
+      price: 578,
+      countInStock: 15,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 14,
+      description: 'high quality product',
+    },
+
+
+  ],
+
+
+  kurtas: [
+    {
+
+      name: 'grandy  kurtas',
+      category: ' kurtas',
+      image: '/image/kur1.jpg',
+      price: 190,
+      countInStock: 10,
+      brand: 'Nike',
+      rating: 4.5,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: 'pandyy  kurtas',
+      category: ' kurtas',
+      image: '/image/kur2.jpg',
+      price: 700,
+      countInStock: 20,
+      brand: 'Adidas',
+      rating: 4.0,
+      numReviews: 10,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' yamium  kurtas',
+      category: 'kurtas',
+      image: '/image/kur3.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+   
+    {
+
+      name: ' valviu  kurtas',
+      category: 'kurtas',
+      image: '/image/kur4.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+    {
+
+      name: ' vapure kurtas',
+      category: 'kurtas',
+      image: '/image/kur5.jpg',
+      price: 220,
+      countInStock: 90,
+      brand: 'Lacoste',
+      rating: 4.8,
+      numReviews: 17,
+      description: 'high quality product',
+    },
+   
+
+  ],
   Saree: [
     {
       _id: "7",

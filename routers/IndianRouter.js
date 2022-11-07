@@ -4,11 +4,11 @@ import data from '../data.js';
 
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
-import Formalshirt from '../Models/formalshirtModel.js';
+import Indian from '../Models/indianModel.js';
 
-const formalshirtRouter = express.Router();
+const indianRouter = express.Router();
 
-formalshirtRouter.get(
+indianRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const pageSize = 4;
@@ -39,7 +39,7 @@ formalshirtRouter.get(
                     : order === 'toprated'
                         ? { rating: -1 }
                         : { _id: -1 };
-        const count = await Formalshirt.count({
+        const count = await Indian.count({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -47,7 +47,7 @@ formalshirtRouter.get(
             ...ratingFilter,
         });
         // const products = await Product.find({ ...sellerFilter });
-        const formalshirts = await Formalshirt.find({
+        const indians = await Indian.find({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -60,33 +60,33 @@ formalshirtRouter.get(
             .sort(sortOrder)
             .skip(pageSize * (page - 1))
             .limit(pageSize);
-        res.send({ formalshirts, page, pages: Math.ceil(count / pageSize) });
+        res.send({ indians, page, pages: Math.ceil(count / pageSize) });
     })
 );
 
 
-formalshirtRouter.get(
+indianRouter.get(
     '/categories',
     expressAsyncHandler(async (req, res) => {
-        const categories = await Formalshirt.find().distinct('category');
+        const categories = await Indian.find().distinct('category');
         res.send(categories);
     })
 );
 
-formalshirtRouter.get(
+indianRouter.get(
     '/seed',
     expressAsyncHandler(async (req, res) => {
-        await Formalshirt.remove({});
+        await Indian.remove({});
         // const createdProducts = await Product.insertMany(data.products);
         // res.send({ createdProducts });
         const seller = await User.findOne({ isSeller: true });
         if (seller) {
-            const formalshirts = data.formalshirts.map((formalshirt) => ({
-                ...formalshirt,
+            const indians = data.indians.map((indian) => ({
+                ...indian,
                 seller: seller._id,
             }));
-            const createdFormalshirts = await Formalshirt.insertMany(formalshirts);
-            res.send({ createdFormalshirts });
+            const createdIndians = await Indian.insertMany(indians);
+            res.send({ createdIndians });
         } else {
             res
                 .status(500)
@@ -95,29 +95,29 @@ formalshirtRouter.get(
     })
 );
 
-formalshirtRouter.get(
+indianRouter.get(
     '/:id',
     expressAsyncHandler(async (req, res) => {
         // const product = await Product.findById(req.params.id);
-        const formalshirt = await Formalshirt.findById(req.params.id).populate(
+        const indian = await Indian.findById(req.params.id).populate(
             'seller',
             'seller.name seller.logo seller.rating seller.numReviews'
         );
-        if (formalshirt) {
-            res.send(formalshirt);
+        if (indian) {
+            res.send(indian);
         } else {
-            res.status(404).send({ message: 'formalshirt Not Found' });
+            res.status(404).send({ message: 'indian Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+indianRouter.post(
     '/',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = new Formalshirt({
+        const indian = new Indian({
             name: 'sample name ' + Date.now(),
             seller: req.user._id,
             image: '/image/p1.jpg',
@@ -129,25 +129,25 @@ formalshirtRouter.post(
             numReviews: 0,
             description: 'sample description',
         });
-        const createdFormalshirt = await formalshirt.save();
-        res.send({ message: 'Formalshirt Created', formalshirt: createdFormalshirt });
+        const createdIndian = await indian.save();
+        res.send({ message: 'Indian Created', indian: createdIndian });
     })
 );
-formalshirtRouter.put(
+indianRouter.put(
     '/:id',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            console.log('formalshirt');
-            formalshirt.name = req.body.name;
-            formalshirt.price = req.body.price;
-            formalshirt.image = req.body.image;
+        const indianId = req.params.id;
+        const indian = await Indian.findById(indianId);
+        if (indian) {
+            console.log('indian');
+            indian.name = req.body.name;
+            indian.price = req.body.price;
+            indian.image = req.body.image;
 
-            formalshirt.images = req.body.images;
+            indian.images = req.body.images;
 
             //   if (req.body.image.image) {
             //     product.fileId = req.body.image.image._id;
@@ -159,40 +159,40 @@ formalshirtRouter.put(
             //     product.fileId = req.body.image.video._id;
             //     product.video = req.body.image.video.path;
             //   }
-            formalshirt.category = req.body.category;
-            formalshirt.brand = req.body.brand;
-            formalshirt.countInStock = req.body.countInStock;
-            formalshirt.description = req.body.description;
-            const updatedFormalshirt = await formalshirt.save();
-            res.send({ message: 'Formalshirt Updated', formalshirt: updatedFormalshirt });
+            indian.category = req.body.category;
+            indian.brand = req.body.brand;
+            indian.countInStock = req.body.countInStock;
+            indian.description = req.body.description;
+            const updatedIndian = await indian.save();
+            res.send({ message: 'Indian Updated', indian: updatedIndian });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Indian Not Found' });
         }
     })
 );
-formalshirtRouter.delete(
+indianRouter.delete(
     '/:id',
     isAuth,
     isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = await Formalshirt.findById(req.params.id);
-        if (formalshirt) {
-            const deleteFormalshirt = await formalshirt.remove();
-            res.send({ message: 'Formalshirt Deleted', formalshirt: deleteFormalshirt });
+        const indian = await Indian.findById(req.params.id);
+        if (indian) {
+            const deleteIndian = await indian.remove();
+            res.send({ message: 'Indian Deleted', indian: deleteIndian });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Indian Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+indianRouter.post(
     '/:id/reviews',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            if (formalshirt.reviews.find((x) => x.name === req.user.name)) {
+        const indianId = req.params.id;
+        const indian = await Indian.findById(indianId);
+        if (indian) {
+            if (indian.reviews.find((x) => x.name === req.user.name)) {
                 return res
                     .status(400)
                     .send({ message: 'You already submitted a review' });
@@ -202,20 +202,20 @@ formalshirtRouter.post(
                 rating: Number(req.body.rating),
                 comment: req.body.comment,
             };
-            formalshirt.reviews.push(review);
-            formalshirt.numReviews = formalshirt.reviews.length;
-            formalshirt.rating =
-            formalshirt.reviews.reduce((a, c) => c.rating + a, 0) /
-            formalshirt.reviews.length;
-            const updatedFormalshirt = await formalshirt.save();
+            indian.reviews.push(review);
+            indian.numReviews = indian.reviews.length;
+            indian.rating =
+            indian.reviews.reduce((a, c) => c.rating + a, 0) /
+            indian.reviews.length;
+            const updatedIndian = await indian.save();
             res.status(201).send({
                 message: 'Review Created',
-                review: updatedFormalshirt.reviews[updatedFormalshirt.reviews.length - 1],
+                review: updatedIndian.reviews[updatedIndian.reviews.length - 1],
             });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Indian Not Found' });
         }
     })
 );
 
-export default formalshirtRouter;
+export default indianRouter;
