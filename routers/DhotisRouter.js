@@ -4,11 +4,11 @@ import data from '../data.js';
 
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
-import Formalshirt from '../Models/formalshirtModel.js';
+import Dhotis from '../Models/dhotisModel.js';
 
-const formalshirtRouter = express.Router();
+const dhotisRouter = express.Router();
 
-formalshirtRouter.get(
+dhotisRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const pageSize = 4;
@@ -39,7 +39,7 @@ formalshirtRouter.get(
                     : order === 'toprated'
                         ? { rating: -1 }
                         : { _id: -1 };
-        const count = await Formalshirt.count({
+        const count = await Dhotis.count({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -47,7 +47,7 @@ formalshirtRouter.get(
             ...ratingFilter,
         });
         // const products = await Product.find({ ...sellerFilter });
-        const formalshirts = await Formalshirt.find({
+        const dhotiss = await Dhotis.find({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -60,33 +60,33 @@ formalshirtRouter.get(
             .sort(sortOrder)
             .skip(pageSize * (page - 1))
             .limit(pageSize);
-        res.send({ formalshirts, page, pages: Math.ceil(count / pageSize) });
+        res.send({ dhotiss, page, pages: Math.ceil(count / pageSize) });
     })
 );
 
 
-formalshirtRouter.get(
+dhotisRouter.get(
     '/categories',
     expressAsyncHandler(async (req, res) => {
-        const categories = await Formalshirt.find().distinct('category');
+        const categories = await Dhotis.find().distinct('category');
         res.send(categories);
     })
 );
 
-formalshirtRouter.get(
+dhotisRouter.get(
     '/seed',
     expressAsyncHandler(async (req, res) => {
-        await Formalshirt.remove({});
+        await Dhotis.remove({});
         // const createdProducts = await Product.insertMany(data.products);
         // res.send({ createdProducts });
         const seller = await User.findOne({ isSeller: true });
         if (seller) {
-            const formalshirts = data.formalshirts.map((formalshirt) => ({
-                ...formalshirt,
+            const dhotiss = data.dhotiss.map((dhotis) => ({
+                ...dhotis,
                 seller: seller._id,
             }));
-            const createdFormalshirts = await Formalshirt.insertMany(formalshirts);
-            res.send({ createdFormalshirts });
+            const createdDhotiss = await Dhotis.insertMany(dhotiss);
+            res.send({ createdDhotiss });
         } else {
             res
                 .status(500)
@@ -95,29 +95,29 @@ formalshirtRouter.get(
     })
 );
 
-formalshirtRouter.get(
+dhotisRouter.get(
     '/:id',
     expressAsyncHandler(async (req, res) => {
         // const product = await Product.findById(req.params.id);
-        const formalshirt = await Formalshirt.findById(req.params.id).populate(
+        const dhotis = await Dhotis.findById(req.params.id).populate(
             'seller',
             'seller.name seller.logo seller.rating seller.numReviews'
         );
-        if (formalshirt) {
-            res.send(formalshirt);
+        if (dhotis) {
+            res.send(dhotis);
         } else {
-            res.status(404).send({ message: 'formalshirt Not Found' });
+            res.status(404).send({ message: 'Dhotis Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+dhotisRouter.post(
     '/',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = new Formalshirt({
+        const dhotis = new Dhotis({
             name: 'sample name ' + Date.now(),
             seller: req.user._id,
             image: '/image/p1.jpg',
@@ -129,25 +129,25 @@ formalshirtRouter.post(
             numReviews: 0,
             description: 'sample description',
         });
-        const createdFormalshirt = await formalshirt.save();
-        res.send({ message: 'Formalshirt Created', formalshirt: createdFormalshirt });
+        const createdDhotis = await dhotis.save();
+        res.send({ message: 'Dhotis Created', dhotis: createddhotis });
     })
 );
-formalshirtRouter.put(
+dhotisRouter.put(
     '/:id',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            console.log('formalshirt');
-            formalshirt.name = req.body.name;
-            formalshirt.price = req.body.price;
-            formalshirt.image = req.body.image;
+        const dhotisId = req.params.id;
+        const dhotis = await Dhotis.findById(dhotisId);
+        if (dhotis) {
+            console.log('dhotis');
+            dhotis.name = req.body.name;
+            dhotis.price = req.body.price;
+            dhotis.image = req.body.image;
 
-            formalshirt.images = req.body.images;
+            dhotis.images = req.body.images;
 
             //   if (req.body.image.image) {
             //     product.fileId = req.body.image.image._id;
@@ -159,40 +159,40 @@ formalshirtRouter.put(
             //     product.fileId = req.body.image.video._id;
             //     product.video = req.body.image.video.path;
             //   }
-            formalshirt.category = req.body.category;
-            formalshirt.brand = req.body.brand;
-            formalshirt.countInStock = req.body.countInStock;
-            formalshirt.description = req.body.description;
-            const updatedFormalshirt = await formalshirt.save();
-            res.send({ message: 'Formalshirt Updated', formalshirt: updatedFormalshirt });
+            dhotis.category = req.body.category;
+            dhotis.brand = req.body.brand;
+            dhotis.countInStock = req.body.countInStock;
+            dhotis.description = req.body.description;
+            const updatedDhotis = await dhotis.save();
+            res.send({ message: 'Dhotis Updated', dhotis: updatedDhotis });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Dhotis Not Found' });
         }
     })
 );
-formalshirtRouter.delete(
+dhotisRouter.delete(
     '/:id',
     isAuth,
     isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = await Formalshirt.findById(req.params.id);
-        if (formalshirt) {
-            const deleteFormalshirt = await formalshirt.remove();
-            res.send({ message: 'Formalshirt Deleted', formalshirt: deleteFormalshirt });
+        const dhotis = await Dhotis.findById(req.params.id);
+        if (dhotis) {
+            const deleteDhotis = await dhotis.remove();
+            res.send({ message: 'Dhotis Deleted', dhotis: deleteDhotis });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Dhotis Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+dhotisRouter.post(
     '/:id/reviews',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            if (formalshirt.reviews.find((x) => x.name === req.user.name)) {
+        const dhotisId = req.params.id;
+        const dhotis = await Dhotis.findById(dhotisId);
+        if (dhotis) {
+            if (dhotis.reviews.find((x) => x.name === req.user.name)) {
                 return res
                     .status(400)
                     .send({ message: 'You already submitted a review' });
@@ -202,20 +202,20 @@ formalshirtRouter.post(
                 rating: Number(req.body.rating),
                 comment: req.body.comment,
             };
-            formalshirt.reviews.push(review);
-            formalshirt.numReviews = formalshirt.reviews.length;
-            formalshirt.rating =
-            formalshirt.reviews.reduce((a, c) => c.rating + a, 0) /
-            formalshirt.reviews.length;
-            const updatedFormalshirt = await formalshirt.save();
+            dhotis.reviews.push(review);
+            dhotis.numReviews = dhotis.reviews.length;
+            dhotis.rating =
+            dhotis.reviews.reduce((a, c) => c.rating + a, 0) /
+            dhotis.reviews.length;
+            const updatedDhotis = await dhotis.save();
             res.status(201).send({
                 message: 'Review Created',
-                review: updatedFormalshirt.reviews[updatedFormalshirt.reviews.length - 1],
+                review: updatedDhotis.reviews[updatedDhotis.reviews.length - 1],
             });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Dhotis Not Found' });
         }
     })
 );
 
-export default formalshirtRouter;
+export default dhotisRouter;

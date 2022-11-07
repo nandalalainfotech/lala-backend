@@ -4,11 +4,11 @@ import data from '../data.js';
 
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import User from '../Models/userModel.js';
-import Formalshirt from '../Models/formalshirtModel.js';
+import Sherwani from '../Models/sherwaniModel.js';
 
-const formalshirtRouter = express.Router();
+const sherwaniRouter = express.Router();
 
-formalshirtRouter.get(
+sherwaniRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
         const pageSize = 4;
@@ -39,7 +39,7 @@ formalshirtRouter.get(
                     : order === 'toprated'
                         ? { rating: -1 }
                         : { _id: -1 };
-        const count = await Formalshirt.count({
+        const count = await Sherwani.count({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -47,7 +47,7 @@ formalshirtRouter.get(
             ...ratingFilter,
         });
         // const products = await Product.find({ ...sellerFilter });
-        const formalshirts = await Formalshirt.find({
+        const sherwanis = await Sherwani.find({
             ...sellerFilter,
             ...nameFilter,
             ...categoryFilter,
@@ -60,33 +60,33 @@ formalshirtRouter.get(
             .sort(sortOrder)
             .skip(pageSize * (page - 1))
             .limit(pageSize);
-        res.send({ formalshirts, page, pages: Math.ceil(count / pageSize) });
+        res.send({ sherwanis, page, pages: Math.ceil(count / pageSize) });
     })
 );
 
 
-formalshirtRouter.get(
+sherwaniRouter.get(
     '/categories',
     expressAsyncHandler(async (req, res) => {
-        const categories = await Formalshirt.find().distinct('category');
+        const categories = await Sherwani.find().distinct('category');
         res.send(categories);
     })
 );
 
-formalshirtRouter.get(
+sherwaniRouter.get(
     '/seed',
     expressAsyncHandler(async (req, res) => {
-        await Formalshirt.remove({});
+        await Sherwani.remove({});
         // const createdProducts = await Product.insertMany(data.products);
         // res.send({ createdProducts });
         const seller = await User.findOne({ isSeller: true });
         if (seller) {
-            const formalshirts = data.formalshirts.map((formalshirt) => ({
-                ...formalshirt,
+            const sherwanis = data.sherwanis.map((sherwani) => ({
+                ...sherwani,
                 seller: seller._id,
             }));
-            const createdFormalshirts = await Formalshirt.insertMany(formalshirts);
-            res.send({ createdFormalshirts });
+            const createdSherwanis = await Sherwani.insertMany(sherwanis);
+            res.send({ createdSherwanis });
         } else {
             res
                 .status(500)
@@ -95,29 +95,29 @@ formalshirtRouter.get(
     })
 );
 
-formalshirtRouter.get(
+sherwaniRouter.get(
     '/:id',
     expressAsyncHandler(async (req, res) => {
         // const product = await Product.findById(req.params.id);
-        const formalshirt = await Formalshirt.findById(req.params.id).populate(
+        const sherwani = await Sherwani.findById(req.params.id).populate(
             'seller',
             'seller.name seller.logo seller.rating seller.numReviews'
         );
-        if (formalshirt) {
-            res.send(formalshirt);
+        if (sherwani) {
+            res.send(sherwani);
         } else {
-            res.status(404).send({ message: 'formalshirt Not Found' });
+            res.status(404).send({ message: 'Sherwani Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+sherwaniRouter.post(
     '/',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = new Formalshirt({
+        const sherwani = new Sherwani({
             name: 'sample name ' + Date.now(),
             seller: req.user._id,
             image: '/image/p1.jpg',
@@ -129,25 +129,25 @@ formalshirtRouter.post(
             numReviews: 0,
             description: 'sample description',
         });
-        const createdFormalshirt = await formalshirt.save();
-        res.send({ message: 'Formalshirt Created', formalshirt: createdFormalshirt });
+        const createdSherwani = await sherwani.save();
+        res.send({ message: 'Sherwani Created', sherwani: createdSherwani });
     })
 );
-formalshirtRouter.put(
+sherwaniRouter.put(
     '/:id',
     isAuth,
     isAdmin,
     isSellerOrAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            console.log('formalshirt');
-            formalshirt.name = req.body.name;
-            formalshirt.price = req.body.price;
-            formalshirt.image = req.body.image;
+        const sherwaniId = req.params.id;
+        const sherwani = await Sherwani.findById(sherwaniId);
+        if (sherwani) {
+            console.log('sherwani');
+            sherwani.name = req.body.name;
+            sherwani.price = req.body.price;
+            sherwani.image = req.body.image;
 
-            formalshirt.images = req.body.images;
+            sherwani.images = req.body.images;
 
             //   if (req.body.image.image) {
             //     product.fileId = req.body.image.image._id;
@@ -159,40 +159,40 @@ formalshirtRouter.put(
             //     product.fileId = req.body.image.video._id;
             //     product.video = req.body.image.video.path;
             //   }
-            formalshirt.category = req.body.category;
-            formalshirt.brand = req.body.brand;
-            formalshirt.countInStock = req.body.countInStock;
-            formalshirt.description = req.body.description;
-            const updatedFormalshirt = await formalshirt.save();
-            res.send({ message: 'Formalshirt Updated', formalshirt: updatedFormalshirt });
+            sherwani.category = req.body.category;
+            sherwani.brand = req.body.brand;
+            sherwani.countInStock = req.body.countInStock;
+            sherwani.description = req.body.description;
+            const updatedSherwani = await sherwani.save();
+            res.send({ message: 'Sherwani Updated', sherwani: updatedSherwani });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Sherwani Not Found' });
         }
     })
 );
-formalshirtRouter.delete(
+sherwaniRouter.delete(
     '/:id',
     isAuth,
     isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const formalshirt = await Formalshirt.findById(req.params.id);
-        if (formalshirt) {
-            const deleteFormalshirt = await formalshirt.remove();
-            res.send({ message: 'Formalshirt Deleted', formalshirt: deleteFormalshirt });
+        const sherwani = await Sherwani.findById(req.params.id);
+        if (sherwani) {
+            const deleteSherwani = await sherwani.remove();
+            res.send({ message: 'Sherwani Deleted', sherwani: deleteSherwani });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Sherwani Not Found' });
         }
     })
 );
 
-formalshirtRouter.post(
+sherwaniRouter.post(
     '/:id/reviews',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        const formalshirtId = req.params.id;
-        const formalshirt = await Formalshirt.findById(formalshirtId);
-        if (formalshirt) {
-            if (formalshirt.reviews.find((x) => x.name === req.user.name)) {
+        const sherwaniId = req.params.id;
+        const sherwani = await Sherwani.findById(sherwaniId);
+        if (sherwani) {
+            if (sherwani.reviews.find((x) => x.name === req.user.name)) {
                 return res
                     .status(400)
                     .send({ message: 'You already submitted a review' });
@@ -202,20 +202,20 @@ formalshirtRouter.post(
                 rating: Number(req.body.rating),
                 comment: req.body.comment,
             };
-            formalshirt.reviews.push(review);
-            formalshirt.numReviews = formalshirt.reviews.length;
-            formalshirt.rating =
-            formalshirt.reviews.reduce((a, c) => c.rating + a, 0) /
-            formalshirt.reviews.length;
-            const updatedFormalshirt = await formalshirt.save();
+            sherwani.reviews.push(review);
+            sherwani.numReviews = sherwani.reviews.length;
+            sherwani.rating =
+            sherwani.reviews.reduce((a, c) => c.rating + a, 0) /
+            sherwani.reviews.length;
+            const updatedSherwani = await sherwani.save();
             res.status(201).send({
                 message: 'Review Created',
-                review: updatedFormalshirt.reviews[updatedFormalshirt.reviews.length - 1],
+                review: updatedSherwani.reviews[updatedSherwani.reviews.length - 1],
             });
         } else {
-            res.status(404).send({ message: 'Formalshirt Not Found' });
+            res.status(404).send({ message: 'Sherwani Not Found' });
         }
     })
 );
 
-export default formalshirtRouter;
+export default sherwaniRouter;
