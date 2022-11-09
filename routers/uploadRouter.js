@@ -6,6 +6,7 @@ import upload from "../middleware/image.js";
 import Image from '../Models/imagesModel.js';
 import Grid from 'gridfs-stream';
 import mongoose from 'mongoose';
+import Product from '../Models/productModel.js';
 
 const uploadRouter = express.Router();
 
@@ -31,8 +32,9 @@ uploadRouter.get('/list', expressAsyncHandler(async(req, res) => {
 uploadRouter.get('/show/:id', expressAsyncHandler(async(req, res) => {
 
     const id = req.params.id;
-    const images = await Image.find({ _id: id });
-
+    const product = await Product.findById({ _id: id });
+    const images = await Image.find({ _id:product.fileId });
+    // const images = await Image.find({ _id:id });
     var filename = images[0].filename;
     const conn = mongoose.connection;
     var gfs = Grid(conn.db, mongoose.mongo);
