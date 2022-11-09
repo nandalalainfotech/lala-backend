@@ -15,6 +15,8 @@ productRouter.get(
     const name = req.query.name || '';
     const seller = req.query.seller || '';
     const category = req.query.category || '';
+    const categorygroup = req.query.categorygroup || '';
+    const categorytype = req.query.categorytype || '';
     const order = req.query.order || '';
     const min =
       req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
@@ -31,6 +33,8 @@ productRouter.get(
     const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
     const sellerFilter = seller ? { seller } : {};
     const categoryFilter = category ? { category } : {};
+    const categorygroupFilter = categorygroup ? { categorygroup } : {};
+    const categorytypeFilter = categorytype ? { categorytype } : {};
     const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
     const ratingFilter = rating ? { rating: { $gte: rating } } : {};
     const sortOrder =
@@ -45,6 +49,8 @@ productRouter.get(
       ...sellerFilter,
       ...nameFilter,
       ...categoryFilter,
+      ...categorygroupFilter,
+      ...categorytypeFilter,
       ...priceFilter,
       ...ratingFilter,
     });
@@ -53,6 +59,8 @@ productRouter.get(
       ...sellerFilter,
       ...nameFilter,
       ...categoryFilter,
+      ...categorygroupFilter,
+      ...categorytypeFilter,
       ...priceFilter,
       ...ratingFilter,
     })
@@ -74,7 +82,22 @@ productRouter.get(
     res.send(categories);
   })
 );
-
+productRouter.get(
+  '/categoriesgroup',
+  expressAsyncHandler(async (req, res) => {
+    const categorygroup = await Product.find().distinct('categorygroup');
+    console.log("categorygroup----------->>>", categorygroup)
+    res.send(categorygroup);
+  })
+);
+productRouter.get(
+  '/categoriestype',
+  expressAsyncHandler(async (req, res) => {
+    const categoriestype = await Product.find().distinct('categorytype');
+    console.log("categoriestype----------->>>", categoriestype)
+    res.send(categoriestype);
+  })
+);
 productRouter.get(
   '/seed',
   expressAsyncHandler(async (req, res) => {
@@ -121,6 +144,8 @@ productRouter.post('/', isAuth, isAdmin, isSellerOrAdmin, expressAsyncHandler(as
         imageFile: '',
         price: 0,
         category: 'sample category',
+        categorygroup: 'sample categorygroup',
+        categorytype: 'sample categorytype',
         brand: 'sample brand',
         countInStock: 0,
         rating: 0,
@@ -140,6 +165,8 @@ productRouter.put('/:id', isAuth, isAdmin, isSellerOrAdmin, expressAsyncHandler(
         product.fileId = req.body.imageFile.image._id;
         product.image = req.body.imageFile.image.filename;
         product.category = req.body.category;
+        product.categorygroup = req.body.categorygroup;
+        product.categorytype = req.body.categorytype;
         product.brand = req.body.brand;
         product.countInStock = req.body.countInStock;
         product.description = req.body.description;

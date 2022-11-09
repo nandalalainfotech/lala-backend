@@ -23,6 +23,8 @@ const productSchema = new mongoose.Schema(
     fileId: { type: mongoose.Schema.Types.ObjectID, ref: 'Image' },
     brand: { type: String, required: true },
     category: { type: String, required: true },
+    categorygroup: { type: String, required: true },
+    categorytype: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
     countInStock: { type: Number, required: true },

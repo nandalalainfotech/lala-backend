@@ -84,7 +84,9 @@ const data = {
   products: [
     {
       name: "formal shirts",
-      category: "shrits",
+      category: "men",
+      categorygroup: "top",
+      categorytext: "tshirt",
       image: "/image/p1.jpg",
       price: 820,
       countInStock: 10,
@@ -95,7 +97,9 @@ const data = {
     },
     {
       name: "blue shirts",
-      category: "shirts",
+      category: "men",
+      categorygroup: "top",
+      categorytext: "tshirt",
       image: "/image/p2.jpg",
       price: 320,
       countInStock: 120,
@@ -106,7 +110,9 @@ const data = {
     },
     {
       name: "lite-blue shirts",
-      category: "shirts",
+      category: "men",
+      categorygroup: "top",
+      categorytext: "tshirt",
       image: "/image/p3.jpg",
       price: 620,
       countInStock: 110,
@@ -117,7 +123,9 @@ const data = {
     },
     {
       name: "kack pants",
-      category: "pants",
+      category: "men",
+      categorygroup: "top",
+      categorytext: "tshirt",
       image: "/image/p4.jpg",
       price: 720,
       countInStock: 10,
@@ -128,7 +136,9 @@ const data = {
     },
     {
       name: "formal pant",
-      category: "pants",
+      category: "men",
+      categorygroup: "top",
+      categorytext: "tshirt",
       image: "/image/p5.jpg",
       price: 920,
       countInStock: 103,
@@ -139,7 +149,9 @@ const data = {
     },
     {
       name: "blue pant",
-      category: "pant",
+      category: "men",
+      categorygroup: "top",
+      categorytext: "tshirt",
       image: "/image/p6.jpg",
       price: 520,
       countInStock: 0,
@@ -153,6 +165,8 @@ const data = {
     {
       name: "line t-shirt ",
       category: "Tshirt",
+      category: "Tshirt",
+      category: "Tshirt",
       image: "/image/shirt1.jpg",
       price: 120,
       countInStock: 10,
@@ -163,6 +177,8 @@ const data = {
     },
     {
       name: "alvi t-shirt",
+      category: "Tshirt",
+      category: "Tshirt",
       category: "Tshirt",
       image: "/image/shirt2.jpg",
       price: 100,
