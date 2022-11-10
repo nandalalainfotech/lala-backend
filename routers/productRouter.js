@@ -83,19 +83,17 @@ productRouter.get(
   })
 );
 productRouter.get(
-  '/categoriesgroup',
+  '/categorygroup',
   expressAsyncHandler(async (req, res) => {
     const categorygroup = await Product.find().distinct('categorygroup');
-    console.log("categorygroup----------->>>", categorygroup)
     res.send(categorygroup);
   })
 );
 productRouter.get(
-  '/categoriestype',
+  '/categorytype',
   expressAsyncHandler(async (req, res) => {
-    const categoriestype = await Product.find().distinct('categorytype');
-    console.log("categoriestype----------->>>", categoriestype)
-    res.send(categoriestype);
+    const categorytype = await Product.find().distinct('categorytype');
+      res.send(categorytype);
   })
 );
 productRouter.get(
