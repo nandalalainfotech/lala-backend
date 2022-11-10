@@ -13,6 +13,21 @@ const orderSchema = new mongoose.Schema(
           ref: 'Product',
           required: true,
         },
+        women: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Women',
+          required: true,
+        },
+        kid: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Kid',
+          required: true,
+        },
+        kid: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Tshirt',
+          required: true,
+        },
       },
     ],
     shippingAddress: {
