@@ -136,19 +136,20 @@ productRouter.get(
 
 productRouter.post('/', isAuth, isAdmin, isSellerOrAdmin, expressAsyncHandler(async(req, res) => {
     const product = new Product({
-        name: 'sample name ' + Date.now(),
+        name: req.body.name,
         seller: req.user._id,
-        image: '/image/p1.jpg',
-        imageFile: '',
-        price: 0,
-        category: 'sample category',
-        categorygroup: 'sample categorygroup',
-        categorytype: 'sample categorytype',
-        brand: 'sample brand',
-        countInStock: 0,
-        rating: 0,
-        numReviews: 0,
-        description: 'sample description',
+        image: req.body.image,
+        fileId: req.body.imageFile._id,
+        price: req.body.price,
+        category: req.body.category,
+        categorygroup: req.body.categorygroup,
+        categorytype: req.body.categorytype,
+        brand: req.body.brand,
+        countInStock: req.body.countInStock,
+        // rating: 0,
+        // numReviews: 0,
+        description: req.body.description,
+
     });
     const createdProduct = await product.save();
     res.send({ message: 'Product Created', product: createdProduct });
@@ -160,8 +161,8 @@ productRouter.put('/:id', isAuth, isAdmin, isSellerOrAdmin, expressAsyncHandler(
     if (product) {
         product.name = req.body.name;
         product.price = req.body.price;
-        product.fileId = req.body.imageFile.image._id;
-        product.image = req.body.imageFile.image.filename;
+        product.fileId = req.body.imageFile._id;
+        product.image = req.body.image;
         product.category = req.body.category;
         product.categorygroup = req.body.categorygroup;
         product.categorytype = req.body.categorytype;
